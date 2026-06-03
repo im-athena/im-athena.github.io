@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I'M ATHENA — Laboratory 3D Print</title>
+  <meta name="description" content="3D-печать на заказ: интерьерный декор, полезные изделия для дома, именные вещи, NFC-решения и малые партии для брендов одежды и шоурумов." />
+  <style>
+    :root {
+      --bg: #f7f1e8;
+      --bg-2: #ede2d3;
+      --text: #201b16;
+      --muted: #6e6258;
+      --card: rgba(255, 252, 246, 0.86);
+      --card-solid: #fffaf2;
+      --line: rgba(32, 27, 22, 0.14);
+      --accent: #c96d3a;
+      --accent-2: #2c2925;
+      --white: #ffffff;
+      --shadow: 0 24px 70px rgba(44, 38, 31, 0.12);
+      --radius-lg: 32px;
+      --radius-md: 22px;
+      --radius-sm: 16px;
+      --max: 1160px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.72), transparent 34%),
+        radial-gradient(circle at 90% 14%, rgba(201, 109, 58, 0.18), transparent 28%),
+        linear-gradient(135deg, #fbf6ef 0%, var(--bg) 44%, #eadccb 100%);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .page {
+      overflow: hidden;
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(247, 241, 232, 0.74);
+      border-bottom: 1px solid rgba(32, 27, 22, 0.08);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(32, 27, 22, 0.08);
+      box-shadow: 0 12px 28px rgba(32, 27, 22, 0.08);
+      flex: 0 0 auto;
+    }
+
+    .brand-mark svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--accent-2);
+      display: block;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 800;
+      line-height: 1.05;
+      font-size: 15px;
+    }
+
+    .brand-text span {
+      letter-spacing: 0.22em;
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 750;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: var(--accent-2);
+      color: var(--white);
+      box-shadow: 0 14px 28px rgba(32, 27, 22, 0.16);
+    }
+
+    .btn-primary:hover { box-shadow: 0 18px 36px rgba(32, 27, 22, 0.2); }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.58);
+      color: var(--text);
+      border-color: var(--line);
+    }
+
+    .hero {
+      padding: 70px 0 42px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 0.92fr;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.52);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+      margin-bottom: 22px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(201, 109, 58, 0.14);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      font-size: clamp(38px, 5.4vw, 66px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      margin-bottom: 24px;
+    }
+
+    .hero-lead {
+      font-size: clamp(18px, 2.1vw, 23px);
+      color: var(--muted);
+      max-width: 640px;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .tag {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(32, 27, 22, 0.08);
+    }
+
+    .hero-card {
+      position: relative;
+      min-height: 580px;
+    }
+
+    .photo-stack {
+      position: relative;
+      height: 580px;
+    }
+
+    .photo {
+      position: absolute;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      background: var(--card-solid);
+      border: 1px solid rgba(255,255,255,.62);
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-main {
+      right: 0;
+      top: 0;
+      width: 84%;
+      height: 57%;
+      z-index: 1;
+    }
+
+    .photo-main img {
+      object-fit: cover;
+      object-position: center 58%;
+      transform: scale(1.08);
+    }
+
+    .photo-small {
+      left: 0;
+      bottom: -1%;
+      width: 64%;
+      height: 48%;
+      z-index: 3;
+    }
+
+    .photo-tall {
+      right: -3%;
+      bottom: -8%;
+      width: 47%;
+      height: 42%;
+      z-index: 2;
+    }
+
+    .floating-note {
+      position: absolute;
+      left: -7%;
+      top: 11%;
+      padding: 18px 20px;
+      max-width: 250px;
+      border-radius: 22px;
+      background: rgba(255, 250, 242, 0.88);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(32, 27, 22, 0.1);
+      box-shadow: 0 18px 50px rgba(32, 27, 22, 0.12);
+      font-weight: 720;
+      z-index: 5;
+    }
+
+    .floating-note span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .section {
+      padding: 70px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: clamp(32px, 4vw, 52px);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      margin-bottom: 0;
+      max-width: 780px;
+    }
+
+    .section-text {
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 520px;
+      margin: 0;
+    }
+
+    .cards-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .info-card {
+      background: var(--card);
+      border: 1px solid rgba(32, 27, 22, 0.09);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: 0 14px 42px rgba(44, 38, 31, 0.06);
+    }
+
+    .info-card h3 {
+      font-size: 20px;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .info-card p {
+      color: var(--muted);
+      margin-bottom: 0;
+      font-size: 15px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .work-card {
+      overflow: hidden;
+      border-radius: var(--radius-md);
+      background: rgba(255, 250, 242, 0.82);
+      border: 1px solid rgba(32, 27, 22, 0.1);
+      box-shadow: 0 16px 48px rgba(44, 38, 31, 0.08);
+    }
+
+    .work-img {
+      height: 260px;
+      background: #ded3c2;
+      overflow: hidden;
+    }
+
+    .work-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+
+    .work-card:hover .work-img img { transform: scale(1.035); }
+
+    .work-body {
+      padding: 20px;
+    }
+
+    .work-body h3 {
+      margin-bottom: 8px;
+      line-height: 1.15;
+    }
+
+    .work-body p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .placeholder {
+      height: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 22px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.56), rgba(201,109,58,.12)),
+        repeating-linear-gradient(45deg, rgba(32,27,22,.08) 0 1px, transparent 1px 13px);
+      color: var(--muted);
+      border-bottom: 1px dashed rgba(32, 27, 22, 0.2);
+    }
+
+    .placeholder strong {
+      display: block;
+      color: var(--text);
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 34px;
+      align-items: stretch;
+    }
+
+    .panel {
+      border-radius: var(--radius-lg);
+      background: rgba(255, 250, 242, 0.78);
+      border: 1px solid rgba(32, 27, 22, 0.1);
+      box-shadow: 0 18px 58px rgba(44, 38, 31, 0.08);
+      padding: 34px;
+    }
+
+    .panel.dark {
+      color: #fffaf2;
+      background:
+        linear-gradient(135deg, rgba(32, 27, 22, .96), rgba(65, 54, 43, .94)),
+        url("images/named-hangers.jpg") center/cover;
+      background-blend-mode: multiply;
+    }
+
+    .panel h2 {
+      font-size: clamp(30px, 3.8vw, 48px);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      margin-bottom: 18px;
+    }
+
+    .panel p { color: var(--muted); }
+    .panel.dark p { color: rgba(255, 250, 242, .72); }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.48);
+      border: 1px solid rgba(32, 27, 22, 0.08);
+    }
+
+    .step-num {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(201, 109, 58, 0.12);
+      color: var(--accent);
+      font-weight: 850;
+    }
+
+    .step strong { display: block; margin-bottom: 2px; }
+    .step span { color: var(--muted); font-size: 15px; }
+
+    .list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 0;
+      margin: 22px 0 0;
+      list-style: none;
+    }
+
+    .list li {
+      padding: 12px 14px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, .48);
+      border: 1px solid rgba(32, 27, 22, .08);
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    .price-card {
+      background: rgba(255, 250, 242, 0.82);
+      border: 1px solid rgba(32, 27, 22, 0.1);
+      border-radius: 22px;
+      padding: 22px;
+      min-height: 152px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .price-card strong {
+      display: block;
+      line-height: 1.1;
+      min-height: 54px;
+      margin-bottom: 14px;
+    }
+
+    .price-card span {
+      display: block;
+      margin-top: auto;
+      color: var(--accent);
+      font-size: 22px;
+      font-weight: 850;
+      letter-spacing: -0.03em;
+    }
+
+    .note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .contact-box {
+      position: relative;
+      overflow: hidden;
+      border-radius: 38px;
+      padding: 48px;
+      background:
+        linear-gradient(120deg, rgba(32, 27, 22, .94), rgba(65, 55, 45, .9)),
+        url("images/orange-vase.jpg") center/cover;
+      background-blend-mode: multiply;
+      color: var(--white);
+      box-shadow: 0 28px 88px rgba(32, 27, 22, 0.2);
+    }
+
+    .contact-box h2 {
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 0.96;
+      letter-spacing: -0.06em;
+      margin-bottom: 18px;
+      max-width: 760px;
+    }
+
+    .contact-box p {
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 18px;
+      max-width: 660px;
+      margin-bottom: 28px;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .contact-actions .btn-primary {
+      background: #fffaf2;
+      color: var(--text);
+      box-shadow: none;
+    }
+
+    .contact-actions .btn-secondary {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.22);
+      color: var(--white);
+    }
+
+    .contact-data {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 15px;
+    }
+
+
+    .business-grid,
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .package-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .business-card,
+    .package-card {
+      padding: 24px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 250, 242, 0.82);
+      border: 1px solid rgba(32, 27, 22, 0.1);
+      box-shadow: 0 16px 48px rgba(44, 38, 31, 0.08);
+    }
+
+    .business-card h3 {
+      font-size: 21px;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .business-card p {
+      color: var(--muted);
+      margin-bottom: 0;
+      font-size: 15px;
+    }
+
+    .package-card strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 19px;
+      line-height: 1.15;
+    }
+
+    .package-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .brand-footer {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+
+        .branded-split {
+      align-items: start;
+    }
+
+    .brand-showcase {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-self: start;
+    }
+
+    .brand-showcase .image-trigger {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: none;
+      cursor: zoom-in;
+      text-align: left;
+    }
+
+    .brand-showcase .work-img {
+      position: relative;
+      height: clamp(400px, 42vw, 520px);
+      overflow: hidden;
+      padding: 0;
+      background: #e8dccd;
+    }
+
+    .brand-showcase .work-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 52%;
+      transform: none;
+      transition: transform .35s ease;
+    }
+
+    .brand-showcase:hover .work-img img,
+    .brand-showcase .image-trigger:hover .work-img img,
+    .brand-showcase .image-trigger:focus-visible .work-img img {
+      transform: scale(1.04);
+    }
+
+    .brand-showcase .work-body {
+      padding: 18px 20px 22px;
+    }
+
+    .zoom-hint {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 250, 242, 0.94);
+      border: 1px solid rgba(32, 27, 22, 0.08);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+      box-shadow: 0 10px 24px rgba(32, 27, 22, 0.08);
+      pointer-events: none;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      background: rgba(22, 18, 14, 0.72);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease;
+    }
+
+    .lightbox.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-dialog {
+      position: relative;
+      width: min(1100px, 100%);
+      max-height: min(90vh, 900px);
+      padding: 18px;
+      border-radius: 28px;
+      background: rgba(255, 250, 242, 0.98);
+      box-shadow: 0 28px 88px rgba(0, 0, 0, 0.28);
+    }
+
+    .lightbox-dialog img {
+      width: 100%;
+      height: auto;
+      max-height: calc(90vh - 36px);
+      object-fit: contain;
+      display: block;
+      border-radius: 20px;
+      background: #f7efe5;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(32, 27, 22, 0.9);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(32, 27, 22, 0.18);
+    }
+
+    .lightbox-caption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .footer {
+      padding: 28px 0 84px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .mobile-cta {
+      display: none;
+      position: fixed;
+      z-index: 20;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      border-radius: 999px;
+      box-shadow: 0 16px 40px rgba(32, 27, 22, .24);
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .split { grid-template-columns: 1fr; }
+      .hero { padding-top: 48px; }
+      .hero-card, .photo-stack { min-height: 480px; height: 480px; }
+      .cards-4, .business-grid, .package-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery { grid-template-columns: repeat(2, 1fr); }
+      .price-grid { grid-template-columns: repeat(2, 1fr); }
+      .section-head { display: block; }
+      .section-text { margin-top: 14px; }
+    }
+
+    @media (max-width: 720px) {
+      .container { width: min(100% - 24px, var(--max)); }
+      .topbar { position: static; }
+      .nav { min-height: 66px; }
+      .nav-links { display: none; }
+      .brand-text { font-size: 13px; }
+      .brand-mark { width: 38px; height: 38px; }
+      .hero { padding: 34px 0 26px; }
+      .hero-actions .btn { width: 100%; }
+      .hero-card, .photo-stack { min-height: 420px; height: 420px; }
+      .photo-main { width: 92%; height: 51%; }
+      .photo-main img { object-position: center 58%; transform: scale(1.08); }
+      .photo-small { width: 71%; height: 41%; bottom: -1%; }
+      .photo-tall { width: 52%; height: 38%; right: -3%; bottom: -7%; }
+      .floating-note { left: -4%; top: 13%; max-width: 210px; font-size: 14px; }
+      .section { padding: 48px 0; }
+      .cards-4, .gallery, .price-grid, .list, .business-grid, .package-grid { grid-template-columns: 1fr; }
+      .work-img, .placeholder { height: 235px; }
+      .panel, .contact-box { padding: 26px; border-radius: 28px; }
+      .contact-actions .btn { width: 100%; }
+      .mobile-cta { display: inline-flex; }
+
+      .brand-showcase .work-img {
+        height: 320px;
+        padding: 0;
+      }
+
+      .brand-showcase .work-img img {
+        transform: none;
+        object-position: center 52%;
+      }
+
+      .brand-showcase:hover .work-img img,
+      .brand-showcase .image-trigger:hover .work-img img,
+      .brand-showcase .image-trigger:focus-visible .work-img img {
+        transform: scale(1.03);
+      }
+
+      .zoom-hint {
+        right: 12px;
+        bottom: 12px;
+        font-size: 12px;
+      }
+
+      .lightbox {
+        padding: 14px;
+      }
+
+      .lightbox-dialog {
+        width: 100%;
+        padding: 14px;
+        border-radius: 22px;
+      }
+
+      .lightbox-dialog img {
+        max-height: calc(82vh - 28px);
+      }
+
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="container nav">
+        <a class="brand" href="#top" aria-label="I'M ATHENA Laboratory 3D Print">
+          <span class="brand-mark"><svg viewBox="0 0 256.713 198.831" aria-hidden="true" focusable="false"><path d="M156.829,0l-28.473,56.943L97.895,0,0,198.831h73.418c9.033-16.314,16.704-33.427,24.604-50.326l1.846-2.15,57-.022,24.93,52.498h74.916L156.829,0ZM168.214,137.832l-105.803.031c-3.018.432-3.813,5.649-5.474,8.013h26.97l-18.979,39.966H18.979L98.39,27.985l22.357,44.287-28.405,56.565-.445,3.052h14.983l19.782-41.66,2.188-2.302,20.982,43.962h14.983l-28.773-59.631c1.594-3.581,2.926-7.475,4.607-11.003,1.295-2.718,3.242-5.178,4.399-7.59,3.86-8.049,7.06-16.683,11.583-24.397.613-1.045-.187-1.749,2.185-1.291l78.92,157.867h-45.449l-24.071-48.01Z"/></svg></span>
+          <span class="brand-text">I'M ATHENA<span>Laboratory 3D Print</span></span>
+        </a>
+        <nav class="nav-links" aria-label="Навигация">
+          <a href="#works">Работы</a>
+          <a href="#business">Брендам</a>
+          <a href="#nfc">NFC</a>
+          <a href="#packaging">Упаковка</a>
+          <a href="#order">Как заказать</a>
+          <a href="#contacts">Контакты</a>
+        </nav>
+        <a class="btn btn-primary" href="https://t.me/pink_86" target="_blank" rel="noopener">Написать</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow"><span class="dot"></span> Мини-каталог работ и быстрый заказ</div>
+            <h1>3D-печать под задачу: декор, полезные вещи и изделия для брендов</h1>
+            <p class="hero-lead">Индивидуальные 3D-изделия для дома, подарков, интерьера и локальных брендов: именные вешалки, подставки, органайзеры, вазы, NFC-визитки, фирменные аксессуары и малые партии под заказ.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="https://t.me/pink_86" target="_blank" rel="noopener">Рассчитать заказ в Telegram</a>
+              <a class="btn btn-secondary" href="#works">Посмотреть примеры</a>
+            </div>
+            <div class="tags">
+              <span class="tag">индивидуальный размер</span>
+              <span class="tag">подбор цвета</span>
+              <span class="tag">надписи и логотипы</span>
+              <span class="tag">NFC-метки</span>
+              <span class="tag">малые партии</span>
+              <span class="tag">партии под заказ</span>
+            </div>
+          </div>
+
+          <div class="hero-card" aria-label="Примеры изделий">
+            <div class="photo-stack">
+              <div class="photo photo-main">
+                <img src="images/brand-hanger.jpg" alt="Брендированная вешалка I'M ATHENA с NFC">
+              </div>
+              <div class="photo photo-small">
+                <img src="images/brand-card.jpg" alt="NFC-визитка I'M ATHENA">
+              </div>
+              <div class="photo photo-tall">
+                <img src="images/orange-vase.jpg" alt="Интерьерная ваза, напечатанная на 3D-принтере">
+              </div>
+              <div class="floating-note">
+                Кастом под задачу
+                <span>форма · цвет · размер · логотип · NFC</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title">Что можно заказать</h2>
+            <p class="section-text">Не обещаю напечатать любой объект без проверки: сначала оцениваю конструкцию, прочность, внешний вид и реальную пригодность изделия.</p>
+          </div>
+
+          <div class="cards-4">
+            <article class="info-card">
+              <h3>Для дома</h3>
+              <p>Аккуратные мыльницы, держатели, органайзеры, подставки под телефон, специи, мельницы и бытовые мелочи под конкретное место.</p>
+            </article>
+            <article class="info-card">
+              <h3>Для детей</h3>
+              <p>Именные вешалки, крючки, аксессуары для детской комнаты и персонализированные подарки без ощущения случайной пластиковой вещи.</p>
+            </article>
+            <article class="info-card">
+              <h3>Для декора</h3>
+              <p>Мини-вазы, фактурные формы, интерьерные детали, сезонный декор, панно и арт-объекты для съёмок и дома.</p>
+            </article>
+            <article class="info-card">
+              <h3>Для брендов</h3>
+              <p>Вешалки с названием бренда, NFC-метки, таблички, элементы выкладки, реквизит и тестовые партии для шоурумов.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="section" id="business">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow"><span class="dot"></span> Для брендов одежды и шоурумов</div>
+              <h2 class="section-title">Фирменные детали, которые работают после покупки</h2>
+            </div>
+            <p class="section-text">Бренду важна не просто “красивая штука”, а предмет, который усиливает подачу товара, помогает запомниться и быстро ведёт клиента к каталогу или контакту.</p>
+          </div>
+
+          <div class="business-grid">
+            <article class="business-card">
+              <h3>Вешалки с названием бренда</h3>
+              <p>Для шоурума, детской одежды, фотосъёмки товара и подарочной выдачи. Можно сделать надпись, логотип, форму и фирменный цвет.</p>
+            </article>
+            <article class="business-card">
+              <h3>NFC-переход в каталог</h3>
+              <p>Клиент прикладывает телефон — открывается Telegram, каталог, страница заказа, прайс или карточка бренда. Ссылка остаётся управляемой.</p>
+            </article>
+            <article class="business-card">
+              <h3>Партии под заказ</h3>
+              <p>Для брендированных изделий можно начать с одного образца: проверить размер, внешний вид, цвет и NFC-сценарий, а затем заказать нужное количество.</p>
+            </article>
+            <article class="business-card">
+              <h3>Подача и витрина</h3>
+              <p>Держатели, таблички, подставки, декор для выкладки, упаковки, съёмок и оформления пространства в едином стиле бренда.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+
+      <section class="section" id="nfc">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow"><span class="dot"></span> NFC-визитки и метки</div>
+              <h2 class="section-title">Что может открывать NFC-визитка</h2>
+            </div>
+            <p class="section-text">NFC-визитка помогает не потерять контакт: по касанию телефона можно открыть каталог, Telegram, страницу бренда или карточку контакта для сохранения.</p>
+          </div>
+
+          <div class="business-grid">
+            <article class="business-card">
+              <h3>Telegram или WhatsApp</h3>
+              <p>Клиент прикладывает телефон и сразу попадает в чат, где можно задать вопрос, оформить заказ или быстро вернуться к переписке.</p>
+            </article>
+            <article class="business-card">
+              <h3>Каталог или соцсети</h3>
+              <p>Можно открыть Telegram-канал, сайт, Instagram, VK, онлайн-каталог, прайс, подборку товаров или страницу с актуальными предложениями.</p>
+            </article>
+            <article class="business-card">
+              <h3>Контакт для сохранения</h3>
+              <p>В NFC можно записать контактную карточку: имя, телефон, компанию, должность, сайт и ссылки. Телефон откроет данные, которые можно сохранить.</p>
+            </article>
+            <article class="business-card">
+              <h3>Мини-страница</h3>
+              <p>Для NFC можно сделать отдельную страницу-визитку: описание, фото, кнопки связи, каталог, условия заказа и форму заявки.</p>
+            </article>
+          </div>
+
+          <p class="note">Самый гибкий вариант — записывать в NFC постоянную ссылку на страницу. Тогда контакты, фото, тексты и кнопки можно обновлять без перепрошивки готовой визитки или изделия.</p>
+        </div>
+      </section>
+
+      <section class="section" id="branded">
+        <div class="container split branded-split">
+          <div class="panel">
+            <div class="eyebrow"><span class="dot"></span> Брендирование + NFC</div>
+            <h2>Вешалка с брендом, которую не выбросят вместе с упаковкой</h2>
+            <p>Фирменная вешалка может работать как часть упаковки, реквизит для съёмки и носитель контакта. На изделие можно добавить название бренда, логотип или короткую надпись, а внутрь встроить NFC-метку.</p>
+            <p>Такой формат особенно хорошо подходит для брендов одежды, детских коллекций, шоурумов, мастеров и подарочных наборов: вещь остаётся у клиента и продолжает напоминать о бренде.</p>
+            <ul class="list">
+              <li>логотип или название</li>
+              <li>фирменный цвет</li>
+              <li>NFC-ссылка</li>
+              <li>форма под стиль бренда</li>
+              <li>малые партии</li>
+              <li>тестовый образец</li>
+            </ul>
+            <p class="note">Для NFC лучше использовать постоянную ссылку на страницу или каталог. Тогда саму страницу можно обновлять, а готовые изделия перепрошивать не придётся.</p>
+          </div>
+
+          <article class="work-card brand-showcase">
+            <button class="image-trigger" type="button" data-lightbox-src="images/brand-hanger.jpg" data-lightbox-alt="Образец брендированной вешалки I'M ATHENA с NFC-меткой">
+              <div class="work-img">
+                <img src="images/brand-hanger.jpg" alt="Образец брендированной вешалки I'M ATHENA с NFC-меткой">
+                <span class="zoom-hint">Открыть фото</span>
+              </div>
+            </button>
+            <div class="work-body">
+              <h3>Образец вешалки I'M ATHENA</h3>
+              <p>Реальный пример брендированной детали: вешалка с названием бренда и NFC-меткой. Фото слегка увеличивается при наведении, а по нажатию открывается на весь экран, чтобы можно было рассмотреть изделие подробнее.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="works">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title">Примеры работ и направлений</h2>
+            <p class="section-text">Изделия можно адаптировать под ваш интерьер, подарок или бренд: изменить размер, цвет, надпись, логотип, форму и сценарий использования.</p>
+          </div>
+
+          <div class="gallery">
+            <article class="work-card">
+              <div class="work-img"><img src="images/named-hangers.jpg" alt="Именные вешалки" /></div>
+              <div class="work-body">
+                <h3>Именные вешалки</h3>
+                <p>Для детской одежды, подарков, шоурумов и брендов. Можно изменить форму, цвет, имя, надпись или логотип.</p>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-img"><img src="images/orange-vase.jpg" alt="Интерьерная ваза" /></div>
+              <div class="work-body">
+                <h3>Интерьерные вазы</h3>
+                <p>Фактурные формы для сухоцветов и интерьерной композиции. Цвет и размер подбираются под пространство.</p>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-img"><img src="images/vase-set.jpg" alt="Набор мини-ваз" /></div>
+              <div class="work-body">
+                <h3>Мини-вазы и декор</h3>
+                <p>Небольшие декоративные изделия в едином стиле: для дома, подарка, витрины или предметной съёмки.</p>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-img"><img src="images/kitchen-holder.jpg" alt="Кухонный держатель" /></div>
+              <div class="work-body">
+                <h3>Кухонные держатели</h3>
+                <p>Подставки, держатели и органайзеры под конкретную задачу: аккуратнее на столе, удобнее в использовании.</p>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-img"><img src="images/custom-product.jpg" alt="Персонализированное изделие" /></div>
+              <div class="work-body">
+                <h3>Персонализированные изделия</h3>
+                <p>Надписи, имена, логотипы, отверстия, крепления и адаптация размера под реальный сценарий использования.</p>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-img"><img src="images/white-vase.jpg" alt="Фактурная белая ваза" /></div>
+              <div class="work-body">
+                <h3>Фактурные формы</h3>
+                <p>Декор с выраженной поверхностью: можно оставить материал как есть или доработать грунтом, покраской и лаком.</p>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="placeholder"><strong>Светильники</strong><span>Скоро добавим реальные фото</span></div>
+              <div class="work-body">
+                <h3>Декоративные светильники</h3>
+                <p>Пока направление в разработке. Для серийных изделий сначала делается безопасный тест и проверка нагрева.</p>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="placeholder"><strong>Панно</strong><span>Скоро добавим реальные фото</span></div>
+              <div class="work-body">
+                <h3>Интерьерные панно</h3>
+                <p>Фактурные настенные элементы, рельефы и декоративные плашки. Размер и цвет подбираются под интерьер.</p>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-img">
+                <img src="images/brand-hanger.jpg" alt="Брендированная вешалка I'M ATHENA с NFC-меткой">
+              </div>
+              <div class="work-body">
+                <h3>Вешалки с брендом и NFC</h3>
+                <p>Фирменная вешалка для брендов одежды и шоурумов: название, логотип, аккуратная подача и NFC-переход в каталог, заказ или контакты.</p>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-img">
+                <img src="images/brand-card.jpg" alt="NFC-визитка I'M ATHENA">
+              </div>
+              <div class="work-body">
+                <h3>NFC-визитки для бизнеса</h3>
+                <p>NFC-визитка может открывать Telegram, каталог, мини-страницу или контактную карточку для сохранения в телефоне.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="order">
+        <div class="container split">
+          <div class="panel dark">
+            <h2>Как проходит заказ</h2>
+            <p>Коротко: вы описываете задачу, я оцениваю реалистичность, предлагаю рабочее решение, считаю стоимость и срок, после согласования печатаю изделие.</p>
+            <p>Если идея технически не подходит для 3D-печати, я скажу об этом заранее и предложу более рабочий вариант.</p>
+          </div>
+
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div><strong>Вы пишете идею</strong><span>Можно прислать фото, референс, размеры или просто объяснить задачу словами.</span></div></div>
+            <div class="step"><div class="step-num">2</div><div><strong>Уточняем детали</strong><span>Размер, цвет, материал, количество, надпись, логотип, крепление, упаковку и необходимость NFC-метки.</span></div></div>
+            <div class="step"><div class="step-num">3</div><div><strong>Считаю стоимость</strong><span>Цена зависит от размера, веса, времени печати, сложности модели, партии и постобработки.</span></div></div>
+            <div class="step"><div class="step-num">4</div><div><strong>Печать и проверка</strong><span>Проверяю внешний вид, посадку деталей, удобство использования и упаковку перед выдачей.</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="packaging">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title">Упаковка</h2>
+            <p class="section-text">Упаковка подбирается по размеру и хрупкости изделия. На старте не закладываю лишнюю “подарочную коробку” туда, где она не нужна клиенту и только увеличивает цену.</p>
+          </div>
+          <div class="package-grid">
+            <div class="package-card">
+              <strong>Небольшие изделия</strong>
+              <span>Крафт-пакет, аккуратная подача и брендированная наклейка. Этого достаточно для мелочей, держателей, зажимов и небольших аксессуаров.</span>
+            </div>
+            <div class="package-card">
+              <strong>Подарочные и бренд-заказы</strong>
+              <span>Можно обсудить более презентабельную подачу: кальку, бумагу, наклейки, вкладыш, NFC-визитку или комплектную упаковку.</span>
+            </div>
+            <div class="package-card">
+              <strong>Крупные изделия</strong>
+              <span>Для панно, светильников, ваз и хрупких изделий упаковка рассчитывается отдельно: коробка, защитная бумага, наполнитель и фиксация.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="section">
+        <div class="container split">
+          <div class="panel">
+            <h2>Что можно изменить под себя</h2>
+            <p>Кастомизация — главный плюс 3D-печати: изделие можно сделать не абстрактно “красивым”, а подходящим под конкретное место, бренд или задачу.</p>
+            <ul class="list">
+              <li>размер</li>
+              <li>цвет</li>
+              <li>имя или надпись</li>
+              <li>логотип</li>
+              <li>форма</li>
+              <li>крепление</li>
+              <li>фактура</li>
+              <li>NFC-метка</li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <h2>Про качество</h2>
+            <p>Я подбираю настройки печати под модель, чтобы изделие выглядело аккуратно, держало форму и было пригодно к реальному использованию.</p>
+            <p>Важно: у 3D-печати могут быть видны слои, шов и небольшая текстура поверхности. Это особенность технологии, но изделие должно выглядеть аккуратно и соответствовать задаче.</p>
+            <p>Для декоративных вещей можно обсудить фактуру поверхности, цветной пластик, грунт, покраску или лак.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="price">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title">Стоимость</h2>
+            <p class="section-text">Точный расчёт зависит от размера, материала, времени печати, подготовки модели, упаковки и постобработки. Ниже — ориентиры, чтобы понимать порядок цены.</p>
+          </div>
+
+          <div class="price-grid">
+            <div class="price-card"><strong>Маленькие аксессуары</strong><span>от 150–300 ₽</span></div>
+            <div class="price-card"><strong>Мыльницы, держатели, подставки</strong><span>от 300–700 ₽</span></div>
+            <div class="price-card"><strong>Именные изделия</strong><span>от 350–900 ₽</span></div>
+            <div class="price-card"><strong>NFC-визитки и метки</strong><span>индивидуально</span></div>
+            <div class="price-card"><strong>Брендированные изделия и партии</strong><span>по количеству</span></div>
+          </div>
+          <p class="note">Для брендов удобнее начинать с тестового образца: так можно проверить размер, внешний вид, цвет и NFC-сценарий до партии. Мини-страница для NFC-визитки или изделия рассчитывается отдельно по объёму: текст, фото, кнопки, каталог и форма заявки.</p>
+        </div>
+      </section>
+
+      <section class="section" id="contacts">
+        <div class="container">
+          <div class="contact-box">
+            <h2>Хотите рассчитать изделие?</h2>
+            <p>Напишите, что хотите сделать, приложите фото или референс, примерный размер, цвет, количество и отметьте, нужна ли NFC-метка или брендирование. Я отвечу, реально ли это напечатать, сколько будет стоить и какой срок.</p>
+            <div class="contact-actions">
+              <a class="btn btn-primary" href="https://t.me/pink_86" target="_blank" rel="noopener">Написать в личный Telegram</a>
+              <a class="btn btn-secondary" href="https://t.me/Laboratory_3Dprint" target="_blank" rel="noopener">Открыть каталог</a>
+              <a class="btn btn-secondary" href="tel:+79324165857">Позвонить</a>
+            </div>
+            <div class="contact-data">
+              <span>Telegram: @pink_86</span>
+              <span>Каталог: @Laboratory_3Dprint</span>
+              <span>MAX / звонок / чат: 8 932 416 5857</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container"><span class="brand-footer"><span class="brand-mark"><svg viewBox="0 0 256.713 198.831" aria-hidden="true" focusable="false"><path d="M156.829,0l-28.473,56.943L97.895,0,0,198.831h73.418c9.033-16.314,16.704-33.427,24.604-50.326l1.846-2.15,57-.022,24.93,52.498h74.916L156.829,0ZM168.214,137.832l-105.803.031c-3.018.432-3.813,5.649-5.474,8.013h26.97l-18.979,39.966H18.979L98.39,27.985l22.357,44.287-28.405,56.565-.445,3.052h14.983l19.782-41.66,2.188-2.302,20.982,43.962h14.983l-28.773-59.631c1.594-3.581,2.926-7.475,4.607-11.003,1.295-2.718,3.242-5.178,4.399-7.59,3.86-8.049,7.06-16.683,11.583-24.397.613-1.045-.187-1.749,2.185-1.291l78.92,157.867h-45.449l-24.071-48.01Z"/></svg></span><span>I'M ATHENA · Laboratory 3D Print · 3D-печать полезных и интерьерных вещей на заказ</span></span></div>
+    </footer>
+
+    <a class="btn btn-primary mobile-cta" href="https://t.me/pink_86" target="_blank" rel="noopener">Рассчитать заказ</a>
+  </div>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Просмотр изображения">
+        <button class="lightbox-close" type="button" aria-label="Закрыть">×</button>
+        <img id="lightboxImage" src="" alt="">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxCaption = document.getElementById('lightboxCaption');
+        const closeBtn = lightbox ? lightbox.querySelector('.lightbox-close') : null;
+        const triggers = document.querySelectorAll('[data-lightbox-src]');
+
+        function openLightbox(src, altText) {
+          if (!lightbox) return;
+          lightboxImage.src = src;
+          lightboxImage.alt = altText || '';
+          lightboxCaption.textContent = altText || '';
+          lightbox.classList.add('is-open');
+          lightbox.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+          if (!lightbox) return;
+          lightbox.classList.remove('is-open');
+          lightbox.setAttribute('aria-hidden', 'true');
+          lightboxImage.src = '';
+          document.body.style.overflow = '';
+        }
+
+        triggers.forEach((trigger) => {
+          trigger.addEventListener('click', () => {
+            openLightbox(trigger.getAttribute('data-lightbox-src'), trigger.getAttribute('data-lightbox-alt'));
+          });
+        });
+
+        if (closeBtn) {
+          closeBtn.addEventListener('click', closeLightbox);
+        }
+
+        if (lightbox) {
+          lightbox.addEventListener('click', (event) => {
+            if (event.target === lightbox) {
+              closeLightbox();
+            }
+          });
+        }
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') {
+            closeLightbox();
+          }
+        });
+      })();
+    </script>
+
+</body>
+</html>
