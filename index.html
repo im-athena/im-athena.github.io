@@ -400,6 +400,31 @@
       font-size: 15px;
     }
 
+
+    .nfc-card-showcase {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nfc-card-showcase .work-img {
+      height: clamp(360px, 34vw, 470px);
+      background: #e8dccd;
+    }
+
+    .nfc-card-showcase .work-img img {
+      object-fit: cover;
+      object-position: center 50%;
+    }
+
+    .nfc-card-showcase .work-body {
+      padding: 22px 24px 26px;
+    }
+
+    .nfc-card-showcase .work-body p {
+      max-width: 620px;
+    }
+
     .placeholder {
       height: 260px;
       display: flex;
@@ -829,6 +854,11 @@
       .contact-actions .btn { width: 100%; }
       .mobile-cta { display: inline-flex; }
 
+
+      .nfc-card-showcase .work-img {
+        height: 330px;
+      }
+
       .brand-showcase .work-img {
         height: 320px;
         padding: 0;
@@ -1024,6 +1054,37 @@
         </div>
       </section>
 
+
+      <section class="section" id="nfc-card">
+        <div class="container split">
+          <div class="panel">
+            <div class="eyebrow"><span class="dot"></span> NFC-визитка + страница</div>
+            <h2>NFC-визитка, которая ведёт клиента к заказу</h2>
+            <p>NFC-визитка может быть не просто красивой карточкой, а удобной точкой входа в ваш бизнес. По касанию телефона клиент открывает ваш сайт, Telegram, каталог, страницу услуг или контактную карточку для сохранения.</p>
+            <p>Если у вас нет готового сайта, разработаем мини-страницу под NFC: с описанием, фото, кнопками связи, каталогом, условиями заказа и ссылками на соцсети.</p>
+            <ul class="list">
+              <li>физическая NFC-визитка</li>
+              <li>ссылка на Telegram</li>
+              <li>контакт для сохранения</li>
+              <li>мини-страница</li>
+              <li>каталог или услуги</li>
+              <li>кнопки связи</li>
+            </ul>
+            <p class="note">Мини-страница собирается как компактная страница-визитка, а не как большой сайт. Её можно обновлять: менять фото, текст, контакты и кнопки без перепрошивки NFC-метки.</p>
+          </div>
+
+          <article class="work-card nfc-card-showcase">
+            <div class="work-img">
+              <img src="images/brand-card.jpg" alt="NFC-визитка I'M ATHENA">
+            </div>
+            <div class="work-body">
+              <h3>Физическая визитка + цифровой переход</h3>
+              <p>Визитка может вести на Telegram, каталог, мини-страницу или карточку контакта. Подходит мастерам, локальным брендам, шоурумам и небольшому бизнесу.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <section class="section" id="branded">
         <div class="container split branded-split">
           <div class="panel">
@@ -1145,7 +1206,7 @@
               </div>
               <div class="work-body">
                 <h3>NFC-визитки для бизнеса</h3>
-                <p>NFC-визитка может открывать Telegram, каталог, мини-страницу или контактную карточку для сохранения в телефоне.</p>
+                <p>Физическая NFC-визитка с переходом в Telegram, каталог, мини-страницу или контактную карточку. Удобно для мастеров, услуг, шоурумов и локальных брендов.</p>
               </div>
             </article>
           </div>
@@ -1162,7 +1223,7 @@
 
           <div class="steps">
             <div class="step"><div class="step-num">1</div><div><strong>Вы пишете идею</strong><span>Можно прислать фото, референс, размеры или просто объяснить задачу словами.</span></div></div>
-            <div class="step"><div class="step-num">2</div><div><strong>Уточняем детали</strong><span>Размер, цвет, материал, количество, надпись, логотип, крепление, упаковку и необходимость NFC-метки.</span></div></div>
+            <div class="step"><div class="step-num">2</div><div><strong>Уточняем детали</strong><span>Размер, цвет, материал, количество, надпись, логотип, крепление, упаковку, необходимость NFC-метки и мини-страницы.</span></div></div>
             <div class="step"><div class="step-num">3</div><div><strong>Считаю стоимость</strong><span>Цена зависит от размера, веса, времени печати, сложности модели, партии и постобработки.</span></div></div>
             <div class="step"><div class="step-num">4</div><div><strong>Печать и проверка</strong><span>Проверяю внешний вид, посадку деталей, удобство использования и упаковку перед выдачей.</span></div></div>
           </div>
@@ -1230,10 +1291,10 @@
             <div class="price-card"><strong>Маленькие аксессуары</strong><span>от 150–300 ₽</span></div>
             <div class="price-card"><strong>Мыльницы, держатели, подставки</strong><span>от 300–700 ₽</span></div>
             <div class="price-card"><strong>Именные изделия</strong><span>от 350–900 ₽</span></div>
-            <div class="price-card"><strong>NFC-визитки и метки</strong><span>индивидуально</span></div>
+            <div class="price-card"><strong>NFC-визитки, метки и мини-страницы</strong><span>индивидуально</span></div>
             <div class="price-card"><strong>Брендированные изделия и партии</strong><span>по количеству</span></div>
           </div>
-          <p class="note">Для брендов удобнее начинать с тестового образца: так можно проверить размер, внешний вид, цвет и NFC-сценарий до партии. Мини-страница для NFC-визитки или изделия рассчитывается отдельно по объёму: текст, фото, кнопки, каталог и форма заявки.</p>
+          <p class="note">Для брендов удобнее начинать с тестового образца: так можно проверить размер, внешний вид, цвет и NFC-сценарий до партии. NFC-визитка, запись ссылки, контактная карточка и мини-страница рассчитываются по задаче: от простого перехода в Telegram до полноценной страницы-визитки с фото, кнопками и каталогом.</p>
         </div>
       </section>
 
@@ -1241,7 +1302,7 @@
         <div class="container">
           <div class="contact-box">
             <h2>Хотите рассчитать изделие?</h2>
-            <p>Напишите, что хотите сделать, приложите фото или референс, примерный размер, цвет, количество и отметьте, нужна ли NFC-метка или брендирование. Я отвечу, реально ли это напечатать, сколько будет стоить и какой срок.</p>
+            <p>Напишите, что хотите сделать, приложите фото или референс, примерный размер, цвет, количество и отметьте, нужна ли NFC-метка, брендирование или мини-страница. Я отвечу, реально ли это напечатать, сколько будет стоить и какой срок.</p>
             <div class="contact-actions">
               <a class="btn btn-primary" href="https://t.me/pink_86" target="_blank" rel="noopener">Написать в личный Telegram</a>
               <a class="btn btn-secondary" href="https://t.me/Laboratory_3Dprint" target="_blank" rel="noopener">Открыть каталог</a>
