@@ -23,7 +23,10 @@ p + p { margin-top: 18px; }
 .section { padding-block: clamp(75px, 8vw, 124px); }
 .eyebrow { font-size: 13px; letter-spacing: .1em; line-height: 1.5; margin-bottom: 25px; }
 .text-link { display: inline-flex; align-items: center; gap: 32px; padding-block: 12px; border-bottom: 1px solid var(--green); color: var(--green); font-size: 16px; }
-.text-link span, .button span { font-size: 22px; line-height: 1; }
+.icon-arrow { display: inline-block; width: 16px; height: 16px; flex: none; vertical-align: -.125em; pointer-events: none; }
+.icon-arrow--down-right { transform: rotate(90deg); }
+.icon-arrow--down { transform: rotate(135deg); }
+.icon-arrow--up { transform: rotate(-45deg); }
 .text-link:hover { color: var(--earth); border-color: var(--earth); }
 .text-link.light { color: var(--milk); border-color: var(--stone); }
 .text-link.light:hover { border-color: var(--milk); }
@@ -42,7 +45,7 @@ p + p { margin-top: 18px; }
 .navigation a { padding-block: 12px; }
 .navigation a:hover, .header-contact:hover { color: var(--earth); }
 .header-contact { font-size: 14px; color: var(--green); border-bottom: 1px solid var(--green); padding-block: 8px; }
-.header-contact span { margin-left: 12px; }
+.header-contact .icon-arrow { margin-left: 12px; }
 .menu-toggle { display: none; }
 .hero { padding-top: 38px; }
 .hero-layout { position: relative; display: grid; grid-template-columns: 38% 62%; align-items: center; }
@@ -57,7 +60,7 @@ figcaption { display: flex; justify-content: space-between; gap: 12px; margin-to
 .hero-image figcaption span:last-child { text-align: right; }
 .hero-bottom { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-top: 29px; padding-bottom: 34px; color: var(--green); font-size: 13px; }
 .hero-bottom p + p { margin-top: 0; }
-.hero-bottom a { display: inline-flex; gap: 28px; padding: 12px 0; }
+.hero-bottom a { display: inline-flex; align-items: center; gap: 28px; padding: 12px 0; }
 .section-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 40px; margin-bottom: 45px; }
 .section-heading .eyebrow { margin-bottom: 0; }
 .section-aside { color: var(--muted); font-size: 13px; }
@@ -84,7 +87,7 @@ figcaption { display: flex; justify-content: space-between; gap: 12px; margin-to
 .swatch.green { background: var(--green); }
 .swatch.earth { background: var(--earth); }
 .image-open { position: relative; display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; color: var(--graphite); text-align: left; }
-.image-open-label { position: absolute; right: 16px; bottom: 16px; background: var(--milk); padding: 6px 12px; font-size: 12px; }
+.image-open-label { position: absolute; right: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; background: var(--milk); padding: 6px 12px; font-size: 12px; }
 .image-open:hover .image-open-label { background: var(--green); color: var(--milk); }
 .objects { border-top: 1px solid var(--line); }
 .objects-heading .eyebrow, .brands .eyebrow, .individual .eyebrow { margin-bottom: 20px; color: var(--green); }
@@ -155,6 +158,7 @@ details p { padding: 0 20px 20px 0; color: var(--muted); }
 .contact .fine-print { color: var(--milk); margin-top: 8px; }
 .contact-bottom { display: flex; justify-content: space-between; gap: 30px; font-size: 12px; border-top: 1px solid #f2eee54d; padding-top: 24px; }
 .contact-bottom a { text-decoration: underline; text-underline-offset: 4px; }
+.contact-bottom .icon-arrow, .footer .icon-arrow { margin-left: 6px; }
 .footer { padding-block: 35px; }
 .footer .shell { display: flex; justify-content: space-between; align-items: center; gap: 25px; font-size: 12px; color: var(--green); }
 .footer .wordmark { font-size: 20px; }
